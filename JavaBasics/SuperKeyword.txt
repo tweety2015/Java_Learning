@@ -1,0 +1,173 @@
+Using super keyword
+=========================
+You can use super in a subclass to refer to its immediate superclass. super has two general forms.
+
+The first calls the superclass' constructor.
+The second is used to access a member of the superclass.
+Using super to Call Superclass Constructors
+
+To call a constructor from its superclass:
+
+
+super(parameter-list);
+parameter-list is defined by the constructor in the superclass.
+super(parameter-list) must be the first statement executed inside a subclass' constructor.
+Here is a demo for how to use super to call constructor from parent class.
+
+ 
+class Box {
+  private double width;
+  private double height;
+  private double depth;
+
+  Box(Box ob) { // pass object to constructor
+    width = ob.width;
+    height = ob.height;
+    depth = ob.depth;
+  }
+  Box(double w, double h, double d) {
+    width = w;
+    height = h;
+    depth = d;
+  }
+  double volume() {
+    return width * height * depth;
+  }
+}
+class BoxWeight extends Box {
+  double weight; // weight of box
+  BoxWeight(Box ob) { // pass object to constructor
+    super(ob);
+  }
+}
+public class Main {
+  public static void main(String args[]) {
+    Box mybox1 = new Box(10, 20, 15);
+    BoxWeight myclone = new BoxWeight(mybox1);
+    double vol;
+
+    vol = mybox1.volume();
+    System.out.println("Volume of mybox1 is " + vol);
+  }
+}
+This program generates the following output:
+
+
+Volume of mybox1 is 3000.0
+Use super to reference members from parent class
+
+Its general form is:
+
+
+super.member
+member can be either a method or an instance variable.
+
+Let's look at the following code.
+
+ 
+class Base {
+  int i;
+}
+class SubClass extends Base {
+  int i; // this i hides the i in A
+  SubClass(int a, int b) {
+    super.i = a; // i in A
+    i = b; // i in B
+  }
+  void show() {
+    System.out.println("i in superclass: " + super.i);
+    System.out.println("i in subclass: " + i);
+  }
+}
+public class Main {
+  public static void main(String args[]) {
+    SubClass subOb = new SubClass(1, 2);
+    subOb.show();
+  }
+}
+This program displays the following:
+
+
+i in superclass: 1
+i in subclass: 2
+A Multilevel Hierarchy Example
+
+ 
+class Box {
+  private double width;
+  private double height;
+  Box(Box ob) { 
+    width = ob.width;
+    height = ob.height;
+  }
+  Box(double w, double h) {
+    width = w;
+    height = h;
+  }
+  Box() {
+    width = -1; // use -1 to indicate
+    height = -1; // an uninitialized
+  }
+  Box(double len) {
+    width = height = len;
+  }
+  double volume() {
+    return width * height;
+  }
+}
+class BoxProduct extends Box {
+  double price; // price of box
+  BoxProduct(BoxProduct ob) { // pass object to constructor
+    super(ob);
+    price = ob.price;
+  }
+  BoxProduct(double w, double h, double m) {
+    super(w, h); // call superclass constructor
+    price = m;
+  }
+  BoxProduct() {
+    super();
+    price = -1;
+  }
+  BoxProduct(double len, double m) {
+    super(len);
+    price = m;
+  }
+}
+class BoxSold extends BoxProduct {
+  double cost;
+  BoxSold(BoxSold ob) {
+    super(ob);
+    cost = ob.cost;
+  }
+  BoxSold(double w, double h, double m, double c) {
+    super(w, h, m); 
+    cost = c;
+  }
+  BoxSold() {
+    super();
+    cost = -1;
+  }
+  BoxSold(double len, double m, double c) {
+    super(len, m);
+    cost = c;
+  }
+}
+
+public class Main {
+  public static void main(String args[]) {
+    BoxSold shipment1 = new BoxSold(10, 20, 10, 3.41);
+
+    double vol = shipment1.volume();
+    System.out.println("Volume of shipment1 is " + vol);
+    System.out.println("Weight of shipment1 is " + shipment1.price);
+    System.out.println("Shipping cost: $" + shipment1.cost);
+    System.out.println();
+  }
+}
+The output of this program is shown here:
+
+
+Volume of shipment1 is 200.0
+Weight of shipment1 is 10.0
+Shipping cost: $3.41
