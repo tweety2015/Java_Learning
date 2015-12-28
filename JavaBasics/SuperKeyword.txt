@@ -1,20 +1,18 @@
 Using super keyword
 =========================
-You can use super in a subclass to refer to its immediate superclass. super has two general forms.
+You can use super in a subclass to refer to its immediate superclass. 
+super has two general forms.
+1. The first calls the superclass' constructor.
+2. The second is used to access a member of the superclass.
 
-The first calls the superclass' constructor.
-The second is used to access a member of the superclass.
 Using super to Call Superclass Constructors
-
 To call a constructor from its superclass:
-
 
 super(parameter-list);
 parameter-list is defined by the constructor in the superclass.
 super(parameter-list) must be the first statement executed inside a subclass' constructor.
-Here is a demo for how to use super to call constructor from parent class.
 
- 
+Here is a demo for how to use super to call constructor from parent class.
 class Box {
   private double width;
   private double height;
@@ -50,21 +48,18 @@ public class Main {
     System.out.println("Volume of mybox1 is " + vol);
   }
 }
+
 This program generates the following output:
-
-
 Volume of mybox1 is 3000.0
 Use super to reference members from parent class
 
 Its general form is:
-
 
 super.member
 member can be either a method or an instance variable.
 
 Let's look at the following code.
 
- 
 class Base {
   int i;
 }
@@ -165,8 +160,8 @@ public class Main {
     System.out.println();
   }
 }
-The output of this program is shown here:
 
+The output of this program is shown here:
 
 Volume of shipment1 is 200.0
 Weight of shipment1 is 10.0
