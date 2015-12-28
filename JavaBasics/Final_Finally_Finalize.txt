@@ -1,0 +1,13 @@
+Final:- It is used in the following cases:
+
+If the final keyword is attached to a variable then the variable becomes constant i.e. its value cannot be changed in the program.
+If a method is marked as final then the method cannot be overridden by any other method.
+If a class is marked as final then this class cannot be inherited by any other class.
+If a parameter is marked with final it becomes a read only parameter.
+Finally:-
+
+If an exception is thrown in try block then the control directly passes to the catch block without executing the lines of code written in the remainder section of the try block. In case of an exception we may need to clean up some objects that we created. If we do the clean-up in try block, they may not be executed in case of an exception. Thus finally block is used which contains the code for clean-up and is always executed after the try ...catch block.
+
+Finalize:-
+
+It is a method present in a class which is called before any of its object is reclaimed by the garbage collector. finalize() method is used for performing code clean-up before the object is reclaimed by the garbage collector.
