@@ -1,0 +1,65 @@
+The Java Virtual Machine (JVM) is a real name dropper when you’re programming in Java. 
+Contrary to what the name indicates, the Java Virtual Machine can be encountered in 
+relation with other programming languages as well.
+
+In general, it’s not necessary to know what the Java Virtual Machine is, or even what it 
+does, to be able to program in Java. On the other hand, familiarizing yourself with the 
+inner workings of a machine does help to increase your understanding and overall insight.
+
+This article brushes over the idea of the Java Virtual Machine, what it does for you, 
+and some of the most important pros and cons. Although I’ve tried to keep it simple, 
+and there is definitely more advanced literature on the subject, a rudimentary understanding 
+of Java and programming is expected.
+
+High-Level Languages
+The semantics of a programming language are designed to be close to our natural language, 
+while staying concise and easy to interpret for a machine. As you probably know, the 
+programming language is wholly different from machine code, the set of instructions a 
+computer uses to construct and run a program. This we call high-level languages; one or 
+multiple levels of abstraction from the machine code.
+
+Before it is able to run, high-level code must first be interpreted. A lot of programming 
+interfaces compile in advance (AOT compilation) for a specific platform. This makes the 
+program more efficient at runtime, but far less compatible with different platforms. 
+Java, in contrast, works with an intermediate language called Java bytecode and the Java 
+Virtual Machine.
+
+JVM & Java Bytecode
+When your Java project builds, it translates the source code (contained in *.java source 
+files) to Java bytecode (most often contained in *.class files). This takes your high-level 
+code one step closer to machine code, but not quite there yet. This bytecode is a collection 
+of compact instructions; easier for a machine to interpret, but less readable.
+
+ 
+When you run a Java application on your computer, cellphone, or any other Java-enabled 
+platform, you essentially pass this Java bytecode to the Java Virtual Machine. The interpreter 
+in the Java Virtual Machine usually starts compiling the entire bytecode at runtime, 
+following the principles of so-called just-in-time compilation. This makes for the 
+typical, albeit often slight delay when opening a Java application, but generally enhances 
+the program performance compared to interpreted compilation.
+
+java virtual machine
+
+The main advantage of this system is the increased compatibility. Since your applications 
+run in a virtual machine instead of directly on your hardware, the developer can program 
+and build their application once, which can then be executed on every device with an 
+implementation of the Java Virtual Machine. This principle has given birth to the Java 
+slogan: “Write once, run everywhere.”
+
+Pro: Compatibility & Increased Security
+Apart from code compatibility, the Java Virtual Machine comes with other benefits. One 
+of the most important of those is the relative security of Java programs as a result of 
+the Java Virtual Machine. Security, meaning that a program running in a virtual machine 
+is far less likely to disrupt the user’s operating system, or corrupt data files, if errors occur.
+
+Con: Different JVM Implementations & Debugging
+One of the main criticisms voiced against the code compatibility and the Java Virtual 
+Machine is due to the many different implementations of the latter. You see, the Java 
+Virtual Machine is not one piece of software. Oracle, the owners of Java, have their 
+implementation of the Java Virtual Machine, but other people can make theirs if it 
+satisfies various practical and contractual claims.
+
+These different implementations mean that your code may run smoothly on one Java Virtual 
+Machine, but crash and burn on another. Although, in practice, you can write your code 
+once and run it everywhere, more complex code sometimes still has to be debugged in 
+different Java Virtual Machine implementations to ensure correct operation.
