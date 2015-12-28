@@ -1,18 +1,33 @@
 
 JVM
 ====
-The Java Virtual machine (JVM) is the virtual machine that run the Java bytecodes. The JVM doesn't understand Java typo, that's why you compile your *.java files to obtain *.class files that contain the bytecodes understandable by the JVM. It's also the entity that allows Java to be a "portable language" (write once, run anywhere). Indeed there are specific implementations of the JVM for different systems (Windows, Linux, MacOS, see the wikipedia list..), the aim is that with the same bytecodes they all give the same results.
+The Java Virtual machine (JVM) is the virtual machine that run the Java bytecodes. 
+The JVM doesn't understand Java typo, that's why you compile your *.java files to 
+obtain *.class files that contain the bytecodes understandable by the JVM. It's 
+also the entity that allows Java to be a "portable language" (write once, run anywhere). 
+Indeed there are specific implementations of the JVM for different systems (Windows, 
+Linux, MacOS, see the wikipedia list..), the aim is that with the same bytecodes they 
+all give the same results.
 
 JDK and JRE
 ================
-To explain the difference between JDK and JRE, the best is to read the Oracle documentation and consult the diagram :
+To explain the difference between JDK and JRE, the best is to read the Oracle documentation 
+and consult the diagram :
 
 Java Runtime Environment (JRE)
 ==================================
-The Java Runtime Environment (JRE) provides the libraries, the Java Virtual Machine, and other components to run applets and applications written in the Java programming language. In addition, two key deployment technologies are part of the JRE: Java Plug-in, which enables applets to run in popular browsers; and Java Web Start, which deploys standalone applications over a network. It is also the foundation for the technologies in the Java 2 Platform, Enterprise Edition (J2EE) for enterprise software development and deployment. The JRE does not contain tools and utilities such as compilers or debuggers for developing applets and applications.
+The Java Runtime Environment (JRE) provides the libraries, the Java Virtual Machine, 
+and other components to run applets and applications written in the Java programming 
+language. In addition, two key deployment technologies are part of the JRE: Java Plug-in, 
+which enables applets to run in popular browsers; and Java Web Start, which deploys 
+standalone applications over a network. It is also the foundation for the technologies 
+in the Java 2 Platform, Enterprise Edition (J2EE) for enterprise software development 
+and deployment. The JRE does not contain tools and utilities such as compilers or debuggers 
+for developing applets and applications.
 
 Java Development Kit (JDK)
 ===========================
-The JDK is a superset of the JRE, and contains everything that is in the JRE, plus tools such as the compilers and debuggers necessary for developing applets and applications.
+The JDK is a superset of the JRE, and contains everything that is in the JRE, plus tools 
+such as the compilers and debuggers necessary for developing applets and applications.
 
 Note that Oracle is not the only one to provide JDK.
