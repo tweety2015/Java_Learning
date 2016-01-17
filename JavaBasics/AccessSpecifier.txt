@@ -1,0 +1,21 @@
+Access Specifiers:
+In order to Restrict the access over the programs we have 3 types of access specifiers
+1.Public
+2.Private
+3.Protected
+
+Access Specifier Table
+
+specifier/modifier	        localVariable	    instanceVariable	    method	      class
+-------------------------------------------------------------------------------------------
+public	                          NA	              A	                A	            A
+protected	                        NA	              A	                A	            NA
+default	                          A 	              A	                A	            A
+private	                          NA	              A	                A	            NA
+final	                            A	                A	                A	            A
+static	                          NA	              A	                A	            NA
+synchronized	                    NA	              NA	              A	            NA
+native	                          NA	              NA	              A	            NA
+volatile	                        NA	              A	                NA	          NA
+transient	                        NA	              A	                NA	          NA
+strictfp	                        NA	              NA	              A	            A
