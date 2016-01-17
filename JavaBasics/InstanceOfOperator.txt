@@ -1,0 +1,53 @@
+Q: What is the instanceof operator and how do I use it?
+Ans: The instanceof operator allows you determine the type of an object. 
+It takes an object on the left side of the operator and a type on the right 
+side of the operator and returns a boolean value indicating whether the 
+object belongs to that type or not. This is most clearly demonstrated with an example:
+
+Example:
+===========
+package test;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+public class InstanceofTest {
+
+	public static void main(String[] args) {
+		Map m = new HashMap();
+		System.out.println("m instanceof Map: " + (m instanceof Map));
+		System.out.println("m instanceof HashMap: " + (m instanceof HashMap));
+		System.out.println("m instanceof Object: " + (m instanceof Object));
+		System.out.println("m instanceof Date: " + (m instanceof Date));
+		m = null;
+		System.out.println("m = null, m instanceof HashMap: " + (m instanceof HashMap));
+	}
+}
+
+Output:
+==========
+m instanceof Map: true
+m instanceof HashMap: true
+m instanceof Object: true
+m instanceof Date: false
+m = null, m instanceof HashMap: false
+
+We started by creating a Map object that is implemented using a HashMap. 
+Map is an interface. Notice from the results that m is both an instanceof Map and 
+an instanceof HashMap. Thus, we can use interfaces in addition to classes on the 
+right side of the instanceof operator.
+
+From the results, also notice that m is an instanceof Object. This makes sense, 
+since every object in JavaSW inherits from Object. The instanceof operator returns 
+true if we ask if an object is an instanceof one of its parent classes.
+
+Notice that m is not an instanceof Date, since m is a Map object and is not an 
+implementation of the Date class.
+
+NOTE:
+==========
+A final behavior to be wary about when using instanceof is that if the value on the 
+left side of the instanceof operator is null, the instanceof operator will return false, 
+even if the value is typed to a particular class. Thus, even though the m variable has 
+the type Map, it's null, so (m instanceof HashMap) returns false if m is null.
