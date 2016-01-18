@@ -1,0 +1,118 @@
+Q: What is an Abstract Class?
+Ans: 
+  -An abstract class is a class that is declared abstract
+  -Abstract classes cannot be instantiated
+  -Abstract classes can be subclassed
+  -It may or may not include abstract methods
+  -When an abstract class is subclassed, the subclass usually provides implementations 
+   for all of the abstract methods in its parent class
+  -If subclass doesn’t provide implementations then the subclass must also be declared abstract.
+
+Q: Can I define an abstract class without adding an abstract method?
+Ans: Of course yes. Declaring a class abstract only means that you don’t allow it to 
+be instantiated on its own. You can’t have an abstract method in a non-abstract class.
+
+Q: What is an Abstract Method?
+Ans: An abstract method is a method that is declared without an implementation.
+It just has a method signature
+
+
+Q: Using an Abstract class
+The purpose of an abstract class is to specify the default functionality of an object 
+and let its sub-classes to explicitly implement that functionality. Thus, it stands as an 
+abstraction layer that must be extended and implemented by the corresponding sub-classes.
+
+A sample example of using an abstract class is the following. 
+We declare an abstract class, called Instrument:
+
+Instrument.java:
+-----------------------
+abstract class Instrument {
+     protected String name;
+     abstract public void play();
+}
+
+As we can observe, an Instrument object contains a field name and a method called play, 
+that must be implemented by a sub-class.
+
+Next, we define a sub-class called StringedInstrument that extends the Instrument class 
+and adds an extra field called numberOfStrings:
+
+StringedInstrument.java:
+---------------------------
+abstract class StringedInstrument extends Instrument {
+     protected int numberOfStrings;
+}
+
+Finally, we add two more classes that implement the functionality of a StringedIntrument, 
+called ElectricGuitar and ElectricBassGuitar accordingly. The definition of these newly 
+added classes is shown below:
+
+ElectricGuitar.java:
+----------------------
+public class ElectricGuitar extends StringedInstrument {
+     public ElectricGuitar() {
+          super();
+          this.name = "Guitar";
+          this.numberOfStrings = 6;
+     }
+     public ElectricGuitar(int numberOfStrings) {
+          super();
+          this.name = "Guitar";
+          this.numberOfStrings = numberOfStrings;
+     }
+     @Override
+     public void play() {
+          System.out.println("An electric " + numberOfStrings + "-string " + name
+                + " is rocking!");
+     }
+}
+
+ElectricBassGuitar.java:
+------------------------------
+public class ElectricBassGuitar extends StringedInstrument {
+     public ElectricBassGuitar() {
+          super();
+          this.name = "Bass Guitar";
+          this.numberOfStrings = 4;
+     }
+     public ElectricBassGuitar(int numberOfStrings) {
+          super();
+          this.name = "Bass Guitar";
+          this.numberOfStrings = numberOfStrings;
+     }
+
+     @Override
+     public void play() {
+          System.out.println("An electric " + numberOfStrings + "-string " + name
+                + " is rocking!");
+     }
+}
+
+Finally, we create a new class called Execution that contains a single main method:
+Execution.java:
+---------------
+import main.java.music.ElectricBassGuitar;
+import main.java.music.ElectricGuitar;
+public class Execution {
+     public static void main(String[] args) {
+          ElectricGuitar guitar = new ElectricGuitar();
+          ElectricBassGuitar bassGuitar = new ElectricBassGuitar();
+          guitar.play();
+          bassGuitar.play();
+          guitar = new ElectricGuitar(7);
+          bassGuitar = new ElectricBassGuitar(5);
+          guitar.play();
+          bassGuitar.play();
+     }
+}
+
+In this example, we create two different instances of an ElectricGuitar and an ElectricBassGuitar 
+classes and we call their play methods. A sample execution of the aforementioned main method is 
+shown below:
+Output:
+---------
+An electric 6-string Guitar is rocking!
+An electric 4-string Bass Guitar is rocking!
+An electric 7-string Guitar is rocking!
+An electric 5-string Bass Guitar is rocking!
