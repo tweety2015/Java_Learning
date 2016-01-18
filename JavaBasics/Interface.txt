@@ -1,12 +1,21 @@
-What is an interface
+Q: What is an interface?
+Ans: Interface looks like class but it is not a class. An interface can have 
+methods and variables just like the class but the methods declared in 
+interface are by default abstract (only method signature, no body). 
+Also, the variables declared in an interface are public, static & final by default. 
+We will discuss these points in detail later in this post.
 
-Interface looks like class but it is not a class. An interface can have methods and variables just like the class but the methods declared in interface are by default abstract (only method signature, no body). Also, the variables declared in an interface are public, static & final by default. We will discuss these points in detail later in this post.
-
-What is the use of interfaces
-
-As stated above they are used for abstraction. Since methods in interfaces do not have body, they have to be implemented by the class before you can access them. The class that implements interface must implement all the methods of that interface. Also, java programming language does not support multiple inheritance, using interfaces we can achieve this as a class can implement more than one interfaces, however it cannot extend more than one classes.
+Q: What is the use of interfaces
+Ans: As stated above they are used for abstraction. Since methods in 
+interfaces do not have body, they have to be implemented by the class 
+before you can access them. The class that implements interface must implement 
+all the methods of that interface. Also, java programming language does not 
+support multiple inheritance, using interfaces we can achieve this as a class 
+can implement more than one interfaces, however it cannot extend more than 
+one classes.
 
 Declaration
+---------------
 Interfaces are declared by specifying a keyword “interface”. E.g.:
 
 interface MyInterface
@@ -17,16 +26,20 @@ interface MyInterface
    public void method1();
    public void method2();
 }
-Interface Implementation
 
-This is how a class implements an interface. It has to provide the body of all the methods that are declared in interface.
-Note: Class implements interface but an interface extends another interface.
+Interface Implementation
+-----------------------
+This is how a class implements an interface. It has to provide the body of all 
+the methods that are declared in interface.
+
+NOTE: Class implements interface but an interface extends another interface.
 
 interface MyInterface
 {
    public void method1();
    public void method2();
 }
+
 class XYZ implements MyInterface
 {
   public void method1()
@@ -43,19 +56,26 @@ class XYZ implements MyInterface
       obj. method1();
   }
 }
-Output:
 
+Output:
+---------
 implementation of method1
 Interface and Inheritance
 
-As I discussed above, an interface can not implement another interface. It has to extend the other interface if required. See the below example where we have two interfaces Inf1 and Inf2. Inf2 extends Inf1 so If class implements the Inf2 it has to provide implementation of all the methods of interfaces Inf1 and Inf2.
+As I discussed above, an interface can not implement another interface. 
+It has to extend the other interface if required. See the below example 
+where we have two interfaces Inf1 and Inf2. Inf2 extends Inf1 so If class 
+implements the Inf2 it has to provide implementation of all the methods of 
+interfaces Inf1 and Inf2.
 
 public interface Inf1{
    public void method1();
 }
+
 public interface Inf2 extends Inf1 {
    public void method2();
 }
+
 public class Demo implements Inf2{
   public void method1(){
     //Implementation of method1
@@ -64,25 +84,27 @@ public class Demo implements Inf2{
     //Implementation of method2
   }
 }
-In the above program my “Demo” class is implementing only one interface “Inf2″ however it has to provide the implementation of all the methods of interface “Inf1″ too, because interface Inf2 extends Inf1.
 
-Key points: Here are the key points to remember about interfaces:
+In the above program my “Demo” class is implementing only one interface “Inf2″ 
+however it has to provide the implementation of all the methods of interface “Inf1″ 
+too, because interface Inf2 extends Inf1.
+
+
+
+
+KEY POINTS: Here are the key points to remember about interfaces:
 1) We can’t instantiate an interface in java.
-
-2) Interface provides complete abstraction as none of its methods can have body. On the other hand, abstract class provides partial abstraction as it can have abstract and concrete(methods with body) methods both.
-
+2) Interface provides complete abstraction as none of its methods can have body. 
+   On the other hand, abstract class provides partial abstraction as it can have 
+   abstract and concrete(methods with body) methods both.
 3) implements keyword is used by classes to implement an interface.
-
-4) While providing implementation in class of any method of an interface, it needs to be mentioned as public.
-
-5) Class implementing any interface must implement all the methods, otherwise the class should be declared as “abstract”.
-
+4) While providing implementation in class of any method of an interface, 
+   it needs to be mentioned as public.
+5) Class implementing any interface must implement all the methods, 
+   otherwise the class should be declared as “abstract”.
 6) Interface cannot be declared as private, protected or transient.
-
 7) All the interface methods are by default abstract and public.
-
 8) Variables declared in interface are public, static and final by default.
-
 interface Try
 {
    int a=10;
@@ -93,15 +115,21 @@ interface Try
 }
 All of the above statements are identical.
 
-9) Interface variables must be initialized at the time of declaration otherwise compiler will through an error.
+9) Interface variables must be initialized at the time of declaration otherwise 
+   compiler will through an error.
 
 interface Try
 {
       int x;//Compile-time error
 }
-Above code will throw a compile time error as the value of the variable x is not initialized at the time of declaration.
+Above code will throw a compile time error as the value of the variable x is 
+not initialized at the time of declaration.
 
-10) Inside any implementation class, you cannot change the variables declared in interface because by default, they are public, static and final. Here we are implementing the interface “Try” which has a variable x. When we tried to set the value for variable x we got compilation error as the variable x is public static final by default and final variables can not be re-initialized.
+10) Inside any implementation class, you cannot change the variables declared 
+in interface because by default, they are public, static and final. Here we are 
+implementing the interface “Try” which has a variable x. When we tried to set the value 
+for variable x we got compilation error as the variable x is public static final by 
+default and final variables can not be re-initialized.
 
 Class Sample implements Try
 {
@@ -110,11 +138,14 @@ Class Sample implements Try
      x=20; //compile time error
   }
 }
-11) Any interface can extend any interface but cannot implement it. Class implements interface and interface extends interface.
+
+11) Any interface can extend any interface but cannot implement it. Class implements 
+interface and interface extends interface.
 
 12) A class can implement any number of interfaces.
 
-13) If there are two or more same methods in two interfaces and a class implements both interfaces, implementation of the method once is enough.
+13) If there are two or more same methods in two interfaces and a class 
+implements both interfaces, implementation of the method once is enough.
 
 interface A
 {
@@ -135,7 +166,9 @@ class Central implements A,B
         //Statements
     }
 }
-14) A class cannot implement two interfaces that have methods with same name but different return type.
+
+14) A class cannot implement two interfaces that have methods with same 
+name but different return type.
 
 interface A
 {
@@ -160,6 +193,7 @@ class Central implements A,B
 
    }
 }
+
 15) Variable names conflicts can be resolved by interface name e.g:
 
 interface A
@@ -180,8 +214,12 @@ class Hello implement A,B
        System.out.println(B.x);
     }
 }
+
 Benefits of having interfaces:
+-----------------------------------
 Following are the advantages of interfaces:
 
 Without bothering about the implementation part, we can achieve the security of implementation
-In java, multiple inheritance is not allowed, However by using interfaces you can achieve the same . A class can extend only one class but can implement any number of interfaces. It saves you from Deadly Diamond of Death(DDD) problem.
+In java, multiple inheritance is not allowed, However by using interfaces you can achieve the 
+same . A class can extend only one class but can implement any number of interfaces. It saves 
+you from Deadly Diamond of Death(DDD) problem.
