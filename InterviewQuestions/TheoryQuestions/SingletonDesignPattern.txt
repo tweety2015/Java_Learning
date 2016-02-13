@@ -1,0 +1,19 @@
+class ClassicSingletondemo {
+	   private static ClassicSingletondemo instance = null;
+	   private ClassicSingletondemo() {
+	      // Exists only to defeat instantiation.
+	   }
+	   public static ClassicSingletondemo getInstance() {
+	      if(instance == null) {
+	         instance = new ClassicSingletondemo();
+	      }
+	      return instance;
+	   }
+}
+
+public class SingletonInstantiator { 
+	  public SingletonInstantiator() {
+	   ClassicSingletondemo instance = ClassicSingletondemo.getInstance();
+	  // ClassicSingletondemo anotherInstance = new ClassicSingletondemo(); not allowed throws Error
+	  } 
+	}
