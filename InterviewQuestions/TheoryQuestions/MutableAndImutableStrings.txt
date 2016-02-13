@@ -1,0 +1,24 @@
+Consider this situation 
+String str="Good";
+str=str+" Morning";
+
+In the above code you create 3 String Objects.
+	"Good" it goes into the String Pool.
+	"Morning" it goes into the String Pool as well.
+	"GoodMorning" created by concatenating "Good" and"Morning" . This guy goes on the Heap.
+	
+Note : Strings are always immutable. There is no, such thing as a mutable String. str is 
+just a reference which eventually points to "GoodMorning". You are actually, not working on 
+1 object. you have 3 distinct String Objects.
+
+Case-2 :
+
+StringBuffer str= new StringBuffer("Good"); str.append(" Morning");
+StringBuffer contains an array of characters. It is not same as a String. The above code adds 
+characters to the existing array. Effectively, StringBuffer is mutable, its String 
+representation isn't.
+
+Conclusion:
+In Java, all strings are immutable. When you are trying to modify a String, what you are 
+really doing is creating a new one. However, when you use a StringBuilder, you are
+actually modifying the contents, instead of creating a new one
