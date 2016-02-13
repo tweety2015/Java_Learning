@@ -1,0 +1,51 @@
+Anonymous classes in Java are more accurately known as anonymous inner 
+classes – there’s no such thing as anonymous classes without the “inner”. 
+That distinction is important, because the fact that they are anonymous 
+inner classes means that they are defined inside another class.
+
+An anonymous inner class is an inner class that is declared without using 
+a class name at all – and that of course is why it’s called an anonymous 
+class. An anonymous inner class also has some pretty unusual syntax.
+
+
+Anonymous inner class example:
+
+class ProgrammerInterview  {
+ public void read() {
+  System.out.println("Programmer Interview!");
+ }
+}
+
+class Website {
+/*  This creates an anonymous inner class: */
+ProgrammerInterview pInstance = new    ProgrammerInterview() {
+  public void read() {
+   System.out.println("anonymous ProgrammerInterview");
+  }
+ };
+}
+Understanding our anonymous inner class example
+
+In the code above, you can see that we have two classes – 
+one called Website and another called ProgrammerInterview. The ProgrammerInterview 
+class is pretty straightforward – there’s just a simple method called “read()” that 
+prints the text “Programmer Interview!” when called.
+
+The code that you need to really look closely at is inside the Website class, 
+and is highlighted in the color red. It might look like we are creating an instance 
+of the ProgrammerInterview class called pInstance in that code, but what’s actually 
+happening in that code is that an instance of an anonymous class is being created.
+
+An anonymous inner class is a subclass
+Pay special attention to the fact that inside the curly braces – after the 
+“new ProgrammerInterview()” code – there is actually a method definition for a 
+method named “read()”. This certainly does not look like we are creating a normal 
+instance of a class – because you don’t normally see methods being defined at the 
+same time that an instance of a class is created.
+
+What’s actually happening in the code above is that we are creating an instance of 
+a subclass (also known as a child class) of the ProgrammerInterview class. And, 
+the most important thing to understand here is that this instance (pInstance) is 
+actually an instance of an anonymous subclass of the ProgrammerInterview class.
+
+More details: http://www.programmerinterview.com/index.php/java-questions/java-anonymous-class-example/
