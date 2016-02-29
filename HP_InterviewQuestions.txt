@@ -1,0 +1,39 @@
+Abstract Class vs an Interface.
+
+I normally used this “What is the difference between an Abstract Class and an Interface” as a quick way to gauge someone. Lots of times, its the first or second question I will ask. I cannot tell you how many times people will mess this question up. 9 times out of 10, people read about it at some www.basicinterviewquestions.com (not a real site hehe), giving the canned response of “You can define default functionality in an abstract class and you can just define functions in an interface”. The curve ball is thrown when you ask “Why would you use one over the other?”. That will earn you the ‘deer in headlights’ look. The other 1 out of 10 you will get a “I never had to use that so I don’t know”.
+
+At the top level, the are a few basic difference. Abstract classes allow for default default function definition. This means that whatever class extends the abstract class will have access to this. If we have a base class where all the classes will perform the same function, then we can define that in our Abstract class. An interface is a list of functions or properties that if a class implements it, it will have to have those functions defined within it. It is a situation of “Is-A” vs “Can-Do-this”. Objects that extends an Abstract class “Is-A” base class. Objects that implement “Can-Do-This”. Now if I asked this question and got the answer, yes, that would be the correct answer. However, I want to know why one would want to use an interface over an abstract class, and vice versa.
+
+When to prefer an interface
+
+Back when I wrote about the importance of composition, I mentioned that it is extremely useful when you don’t want a massive hierarchical type framework. The same applies to interfaces. This isn’t my example, but its the best one Ive come across. Lets say you have an interface for a Director and another interface for a Actor.
+
+public interface Actor{
+   Performance say(Line l);
+}
+public interface Director{
+   Movie direct(boolean goodmovie);
+}
+In reality, there are Actors who are also Directors. If we are using interfaces rather than abstract classes, we can implement both Actor and Director. We could even define an ActorDirector interface that extends both like this:
+
+public interface ActorDirector extends Actor, Director{
+...
+}
+We could achieve the same thing using abstract classes. Unfortunately the alternative would require up to 2^n (where n is the number of attributes) possible combinations in order to support all possibilities.
+
+When to prefer an Abstract class
+
+Abstract classes allow you to provide default functionality for the subclasses. Common knowledge at this point. Why is this extremely important though? If you plan on updating this base class throughout the life of your program, it is best to allow that base class to be an abstract class. Why? Because you can make a change to it and all of the inheriting classes will now have this new functionality. If the base class will be changing often and an interface was used instead of an abstract class, we are going to run into problems. Once an interface is changed, any class that implements that will be broken. Now if its just you working on the project, that’s no big deal. However, once your interface is published to the client, that interface needs to be locked down. At that point, you will be breaking the clients code.
+
+Speaking from personal experiences, frameworks is a good place to show when and where to use both an abstract class and an interface. Another general rule is if you are creating something that provides common functionality to unrelated classes, use an interface. If you are creating something for objects that are closely related in a hierarchy, use an abstract class. An example of this would be something like a business rules engine. This engine would take in multiple BusinessRules as classes perhaps? Each one of these classes will have an analyze function on it.
+
+public interface BusinessRule{
+   Boolean analyze(Object o);
+}
+This can be used ANYWHERE. It can be used to verify the state of your application. Verify data is correct. Verify that the user is logged in. Each one of these classes just needs to implement the analyze function, which will be different for each rule.
+
+Where as if we were creating a generic List object, the use of abstract classes would be better. Every single List object is going to display the data in a list in some form or another. The base functionality would be to have it go through its dataprovider and build that list. If we want to change that List object, we just extend it, override our build list function, change what we want and call super.buildList();
+
+Almost everyone knows that interfaces means you are just defining a list of functions and that abstract classes has the option of providing default functionality. The snags come when you drop the ‘why would I use one over the other?’. Abstract classes and interfaces are some of the most important fundamentals of object oriented programming. Just knowing the differences between the two is not enough. When you can look at a situation and make a strong recommendation, you will known you have a much stronger knowledge of object oriented programming. Also it helps during interviews. :P .
+
+Feel I le
