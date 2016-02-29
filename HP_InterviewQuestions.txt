@@ -97,11 +97,10 @@ Q2. What is java Enums?
 
 Q3. What is a class level lock. Can you please explain with an example.?
 
-
-15
-down vote
-accepted
-I am assuming you are referring to a synchronization lock. If you are unfamiliar with synchronization it is a means to prevent the same code being run by two different threads at the same time. In java synchronization is done with Object locks:
+Ans:
+I am assuming you are referring to a synchronization lock. If you are unfamiliar with 
+synchronization it is a means to prevent the same code being run by two different threads 
+at the same time. In java synchronization is done with Object locks:
 
 Object lock = new Object();
 
@@ -112,17 +111,25 @@ public void doSomething(){
   }
   ...
 }
-In this code it is guaranteed only one thread can do something dangerous at a given time, and it will complete everything in the synchronized block before another thread may start running the same code. I am guessing what you are referring to as a "class level lock" is the implicit lock on synchronized method:
+In this code it is guaranteed only one thread can do something dangerous 
+at a given time, and it will complete everything in the synchronized block 
+before another thread may start running the same code. I am guessing what you 
+are referring to as a "class level lock" is the implicit lock on synchronized method:
 
 public synchronized void somethingDangerous(){...}
-Here again only one thread can execute the method at any given time and will always finish before another thread may begin executing the code. This is equivalent to a synchronized block on "this":
+Here again only one thread can execute the method at any given time and 
+will always finish before another thread may begin executing the code. 
+This is equivalent to a synchronized block on "this":
 
 public void somethingDangerous(){
   synchronized(this){
     //something dangerous
   }
 }
-Now this lock isn't actually on the class, but rather on a single instance (i.e. not all clocks, but only your clock). If you want a true "class level lock" (which would typically be done in a static method), then you need to synchronize on something independent of any instances. For example:
+Now this lock isn't actually on the class, but rather on a single instance 
+(i.e. not all clocks, but only your clock). If you want a true "class level lock" 
+(which would typically be done in a static method), then you need to synchronize 
+on something independent of any instances. For example:
 
 public class Clock{
   private static Object CLASS_LOCK = new Object();
