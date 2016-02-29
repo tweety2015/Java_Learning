@@ -46,4 +46,61 @@ Q2. What is java Enums?
 
 ===================================================================================================
 
-Feel I le
+Q3. What is a class level lock. Can you please explain with an example.?
+
+
+15
+down vote
+accepted
+I am assuming you are referring to a synchronization lock. If you are unfamiliar with synchronization it is a means to prevent the same code being run by two different threads at the same time. In java synchronization is done with Object locks:
+
+Object lock = new Object();
+
+public void doSomething(){
+  ...
+  synchronized(lock){
+    //something dangerous
+  }
+  ...
+}
+In this code it is guaranteed only one thread can do something dangerous at a given time, and it will complete everything in the synchronized block before another thread may start running the same code. I am guessing what you are referring to as a "class level lock" is the implicit lock on synchronized method:
+
+public synchronized void somethingDangerous(){...}
+Here again only one thread can execute the method at any given time and will always finish before another thread may begin executing the code. This is equivalent to a synchronized block on "this":
+
+public void somethingDangerous(){
+  synchronized(this){
+    //something dangerous
+  }
+}
+Now this lock isn't actually on the class, but rather on a single instance (i.e. not all clocks, but only your clock). If you want a true "class level lock" (which would typically be done in a static method), then you need to synchronize on something independent of any instances. For example:
+
+public class Clock{
+  private static Object CLASS_LOCK = new Object();
+
+  public static void doSomething(){
+    ...
+    synchronized(CLASS_LOCK){
+      //something dangerous to all clocks, not just yours
+    }
+    ...
+  }
+}
+again there is an implicit lock for static methods:
+
+public class Clock{
+  public static synchronized void somethingDangerous(){}
+}
+which is the equivalent of locking on the class object:
+
+public class Clock{
+  public static void somethingDangerous(){
+    synchronized(Clock.class){
+      //do something dangerous
+    }
+  }
+}
+
+
+===================================================================================================
+
