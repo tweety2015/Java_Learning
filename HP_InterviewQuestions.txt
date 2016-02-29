@@ -1,3 +1,5 @@
+Q1. When to use interface and when to use abstract class? 
+
 Abstract Class vs an Interface.
 
 I normally used this “What is the difference between an Abstract Class and an Interface” as a quick way to gauge someone. Lots of times, its the first or second question I will ask. I cannot tell you how many times people will mess this question up. 9 times out of 10, people read about it at some www.basicinterviewquestions.com (not a real site hehe), giving the canned response of “You can define default functionality in an abstract class and you can just define functions in an interface”. The curve ball is thrown when you ask “Why would you use one over the other?”. That will earn you the ‘deer in headlights’ look. The other 1 out of 10 you will get a “I never had to use that so I don’t know”.
@@ -35,5 +37,13 @@ This can be used ANYWHERE. It can be used to verify the state of your applicatio
 Where as if we were creating a generic List object, the use of abstract classes would be better. Every single List object is going to display the data in a list in some form or another. The base functionality would be to have it go through its dataprovider and build that list. If we want to change that List object, we just extend it, override our build list function, change what we want and call super.buildList();
 
 Almost everyone knows that interfaces means you are just defining a list of functions and that abstract classes has the option of providing default functionality. The snags come when you drop the ‘why would I use one over the other?’. Abstract classes and interfaces are some of the most important fundamentals of object oriented programming. Just knowing the differences between the two is not enough. When you can look at a situation and make a strong recommendation, you will known you have a much stronger knowledge of object oriented programming. Also it helps during interviews. :P .
+
+
+
+===================================================================================================
+
+Q2. What is java Enums?
+
+===================================================================================================
 
 Feel I le
