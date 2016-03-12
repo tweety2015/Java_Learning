@@ -1,0 +1,266 @@
+Serialization is the process of converting an object's state (including its references) to a sequence of bytes, as well as the process of rebuilding those bytes into a live object at some future time. Simple......Coverting an object to bytes and bytes back to object. So when is serialization used? Serialization is used when you want to persist the object. It is also used by RMI to pass objects between JVMs, either as arguments in a method invocation from a client to a server or as return values from a method invocation. In general, serialization is used when we want the object to exist beyond the lifetime of the JVM.
+
+Lets see couple of different scenarios (examples) where we use serialization.
+
+1. Banking example: When the account holder tries to withdraw money from the server through ATM, the account holder information along with the withdrawl details will be serialized (marshalled/flattened to bytes) and sent to server where the details are deserialized (unmarshalled/rebuilt the bytes)and used to perform operations. This will reduce the network calls as we are serializing the whole object and sending to server and further request for information from client is not needed by the server.
+
+
+2. Stock example: Lets say an user wants the stock updates immediately when he request for it. To achieve this, everytime we have an update, we can serialize it and save it in a file. When user requests the information, deserialize it from file and provide the information. This way we dont need to make the user wait for the information until we hit the database, perform computations and get the result.
+
+Here are some uses of serialization
+
+To persist data for future use.
+To send data to a remote computer using such client/server Java technologies as RMI or socket programming.
+To "flatten" an object into array of bytes in memory.
+To exchange data between applets and servlets.
+To store user session in Web applications.
+To activate/passivate enterprise java beans.
+To send objects between the servers in a cluster.
+
+ 
+
+So far we saw what and when serialization is used.
+
+Lets see now how serialization is performed in java.
+
+Java provides Serialization API, a standard mechanism to handle object serialization. To persist an object in java, the first step is to flatten the object. For that the respective class should implement "java.io.Serializable" interface. Thats it. We dont need to implement any methods as this interface do not have any methods. This is a marker interface/tag interface. Marking a class as Serializable indicates the underlying API that this object can be flattened.
+
+
+public class SerialClass implements Serializable {
+    private Date currentTime;
+
+    public SerialClass() {
+        currentTime = Calendar.getInstance().getTime();
+    }
+
+    public Date getCurrentTime() {
+        return currentTime;
+    }
+}
+
+Now you marked the object for flattening. Next step is to actually persist the object. To persist an object you need to use node stream to write to file systems or transfer a flattened object across a network wire and have it be rebuilt on the other side. You can use java.io.ObjectOutputStream class, a filter stream which is a wrapper around a lower-level byte stream.
+
+So to write an object you use "writeObject(<<instance>>)" method of "java.io.ObjectOutputStream" class and to read an object you use "readObject()" method of "java.io.ObjectOutputStream" class. "readObject()" can read only serialized object, that means if the class does not implement "java.io.Serializable" interface, "readObject()" cannot read that object.
+
+
+//Class to persist the time in a flat file time.ser
+public class PersistSerialClass {
+
+    public static void main(String [] args) {
+        String filename = "time.ser";
+
+        if(args.length > 0){
+            filename = args[0];
+        }
+		
+        PersistSerialClass time = new PersistSerialClass();
+        FileOutputStream fos = null;
+        ObjectOutputStream out = null;
+
+        try{
+            fos = new FileOutputStream(filename);
+            out = new ObjectOutputStream(fos);
+            out.writeObject(time);
+            out.close();
+        }catch(IOException ex){
+            ex.printStackTrace();
+        }
+     }
+ }
+
+
+//Class to read the time from a flat file time.ser
+public class ReadSerialClass {
+
+    public static void main(String [] args) {
+        String filename = "time.ser";
+
+        if(args.length > 0){
+            filename = args[0];
+        }
+		
+        PersistSerialClass time = null;
+        FileInputStream fis = null;
+        ObjectInputStream in = null;
+
+        try{
+            fis = new FileInputStream(filename);
+            in = new ObjectInputStream(fis);
+            time = (PersistSerialClass)in.readObject();
+            in.close();
+        }catch(IOException ex){
+            ex.printStackTrace();
+        }catch(ClassNotFoundException cnfe){
+            cnfe.printStackTrace();
+        }
+
+        // print out restored time
+        System.out.println("Restored time: " + time.getTime());
+
+        // print out the current time
+        System.out.println("Current time: " 
+			+ Calendar.getInstance().getTime());
+
+     }
+ }
+When you serialize an object, only the object's state will be saved, not the object's class file or methods.
+
+When you serialize the above example class, the serialized class will look like below. Surprising.. isn't it? Yes, when you serialized a 2 byte object, you see 51 bytes serialized file. How did it convert to 51 bytes file? To know this,
+
+Let's see step by step on how the object is serialized and de-serialized.
+
+So when an object is serailized 
+First it writes out the serialization stream magic data - What is serialization stream magic data? This is nothing but the STREAM_MAGIC and STREAM_VERSION data (static data) so that JVM can deserialize it when it has to. The STRAM_MAGIC will be "AC ED" and the STREAM_VERSION will be the version of the JVM.
+Then it writes out the metadata (description) of the class associated with an instance. So in the below example after writing out the magic data, it writes out the description of "SerialClass" class. What does this description include? It includes the length of the class, the name of the class, serialVersionUID (or serial version), various flags and the number of fields in this class.
+Then it recursively writes out the metadata of the superclass until it finds java.lang.object. Again in the below example, it writes out the description of "SerialParent" and "SerialParentParent" classes.
+Once it finishes writing the metadata information, it then starts with the actual data associated with the instance. But this time, it starts from the top most superclass. So it starts from "SerialParentParent", then writes out "SerialParent".
+Finally it writes the data of objects associated with the instance starting from metadata to actual content. So here it starts writing the metadata for the class Contain and then the contents of it as usual recursively.
+
+ 
+
+
+class SerialParentParent implements Serializable {
+    int parentParentVersion = 10;
+}
+
+class SerialParent implements Serializable {
+    int parentVersion = 11;
+}
+
+class Contain implements Serializable{	
+    int containVersion = 20;
+}
+
+public class SerialClass extends SerialParent implements Serializable {
+    int version = 12;	
+    Contain con = new Contain();	
+
+    public int getVersion() {		
+        return version;	
+    }
+	
+    public static void main(String args[]) throws IOException {		
+        FileOutputStream fos = new FileOutputStream("temp.ser");		
+        ObjectOutputStream oos = new ObjectOutputStream(fos);		
+        SerialClass st = new SerialClass();		
+        oos.writeObject(st);		
+        oos.flush();		
+        oos.close();	
+    }
+}
+
+How to customize the default protocol?
+
+MMmmmm.. Now its getting more interesting. Lets say, you need to perform some specific operations in the constructor when you are instantiating the class but you cant perform those operations when you deserialize the object because constructor wont be called when an object is de-serialized. Here we are restoring an object but not reconstructing an object. Then how will you call or perform those operations when you desrialize the object? Well, you have a way here and its simple too. You can enhance the normal process by providing two methods inside your serializable class. Those methods are:
+
+private void writeObject(ObjectOutputStream out) throws IOException; 
+
+private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException; 
+
+Notice that both methods are declared private and ofcourse they must be declared private, proving that neither method is inherited and overridden or overloaded. The trick here is that the virtual machine will automatically check to see if either method is declared during the corresponding method call. The virtual machine can call private methods of your class whenever it wants but no other objects can. Thus, the integrity of the class is maintained and the serialization protocol can continue to work as normal.
+
+
+public class SerialClass implements Serializable {
+    private Date currentTime;
+
+    public SerialClass() {
+        calculateCurrentTime();
+    }
+
+    public Date getCurrentTime() {
+        return currentTime;
+    }
+
+    private Date calculateCurrentTime(){
+        currentTime = Calendar.getInstance().getTime();
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        out.defaultWriteObject();
+    }
+
+    private void readObject(ObjectInputStream in) 
+	    throws IOException, ClassNotFoundException{
+
+        // our "pseudo-constructor"
+        in.defaultReadObject();
+        // now perfrom same operation you need to do in constructor
+        calculateCurrentTime();
+    }
+}
+
+Ooops. I mentioned earlier that for a class to be serializable either the class should implement "Serializable" interface or one of its super class should implement "Serializable" interface. Now what if you dont want to serialize one of the sub class of a serializable class? You have a way here tooo. To stop the automatic serialization, you can once again use the private methods to just throw the NotSerializableException in your class.
+
+
+private void writeObject(ObjectOutputStream out) throws IOException{
+
+    throw new NotSerializableException("Dont Serialize");
+}
+
+private void readObject(ObjectInputStream in) throws IOException{
+
+    throw new NotSerializableException("Dont Serialize");
+}
+
+Well... One more way to serialize the object - the Externalizable Interface
+
+Again there is one more way to serialize the object - create your own protocol with the Externalizable interface. Instead of implementing the Serializable interface, you can implement Externalizable, which contains two methods: 
+
+public void writeExternal(ObjectOutput out) throws IOException; 
+
+public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException; 
+
+The Externalization is discussed as separate topic. Check it out here or check the menu.
+
+How not to serialize some fields in a serializble object?
+
+Sometimes you dont want to serialize/store all the fields in the object. Say some fields you want to hide to preserve the privacy or some fields you may want to read only from master data, then you dont seriaalize them. To do this, you just need to declare a field as transient field.
+
+transient private int checkPoint;
+
+Also the static fields are not serialized. Actually there is no point in serializing static fields as static fields do not represent object state but represent class state and it can be modified by any other object. Lets assume that you have serialized a static field and its value and before deserialization of the object, the static field value is changed by some other object. Now the static field value that is serialized/stored is no more valid. Hence it make no point in serializing the static field.
+
+
+ 
+
+Apart from declaring the field as transient, there is another tricky way of controlling what fields can be serialized and what fields cannot be. This is by overriding the writeObject() method while serialization and inside this method you are responsible for writing out the appropriate fields. When you do this, you may have to override readObject() method as well. This sound similar to using Externalizable where you will write writeExternal() and readExternal() methods but anyways lets not take this route as this is not a neat route.
+
+Note that serialization does not care about access modifiers. It serializes all private, public and protected fields.
+
+Nonserializable objects
+
+Earlier we discussed about not serializing certain fields in a serializable object and why it may be needed sometimes. But now lets see why certain objects should not be serialized? As you know, the Object class does not implement Serializable interface and hence any object by default is not serializable. To make an object serializable, the respective class should explicitly implement Serializable interface. However certain system classes defined by java like "Thread", "OutputStream", "Socket" are not serializable. Why so? Lets take a step back - now what is the use of serializing the Thread running in System1 JVM using System1 memory and then deserializing it in System2 and trying to run in System2 JVM. Makes no sense right! Hence these classes are not serializable.
+
+Ok. So far so good. Now what if you want to serialize an object containing an instance of Thread? Simple. Declare the Thread instance as transient.
+
+
+public class SerialClass implements Serializable, Runnable {
+    transient private Thread myThread;
+
+    public PersistentAnimation(int animationSpeed) {
+		...
+		...
+    }
+}
+
+Versioning issues
+
+One very important item to look at is the versioning issue. Sometimes you wil get "java.io.InvalidClassException" but when you check the class (it will be Serializable class), you will find nothing wrong with it. Then what is causing this exception to be thrown? Ok. Here it is. You create a Serializable class, instantiate it, and write it out to an object stream. That flattened object sits in the file system for some time. Meanwhile, you update the class file by adding a new field. Then try to read the flattened object. InvalidClassException is thrown because all persistent-capable classes are automatically given a unique identifier. If the identifier of the class does not equal the identifier of the flattened object, the exception will be thrown and when you update the class with a new field, a new identifier will be generated.
+
+To fix this issue, manually add the identifier to the class. The identifier that is part of all classes is maintained in a field called serialVersionUID. If you wish to control versioning, you simply have to provide the serialVersionUID field manually and ensure it is always the same, no matter what changes you make to the classfile. More about it is discussed in separate topic. Check it here.
+
+Performance Issues/Improvement with Serialization
+
+The default way of implementing the serialization (by implementing the Serializable interface) has performance glitches. Say you have to write an object 10000 times in a flat file through serialization, this will take much more (alomost double) the time than it takes to write the same object 10000 times to console. To overcome this issue, its always better to write your custom protocol instead of going for default option.
+
+
+ 
+
+Also always note to close the streams (object output and input streams). The object references are cached in the output stream and if the stream is not closed, the system may not garbage collect the objects written to a stream and this will result in poor performance.
+
+Using Serialization always have performance issues? Nope... Let me give you a situation where it is used for performance improvement. Lets assume you have an application that should display a map and pointing to different areas in the map should highlight those areas in different color. Since all these are images, when you point to each location, loading an image each time will slow the application heavily. To resolve this issue, serialization can be used. So here since the images wont change, you can serialize the image object and the respective points on the map (x and y co-ordinates) and deserialize it as and when necessary. This improves the performance greatly.
+
+What happens to inner classes? We forgot all about it.
+
+Yes, you can serialize inner classes by implementing the Serializable interface but it has some problems. Inner classes (declared in a non-static context) will always contain implicit references to their enclosing classes and these references are always non-transient. So, while object serialization process of inner classes, the enclosing classes will also be serialized. Now the problem is that the synthetic fields generated by Java compilers to implement inner classes are pretty much implementation dependent and hence we may face compatibility issues while deserialization on a different platform having a .class file generated by a different Java compiler. The default serialVerionUID may also be different in such cases. Not only this, the names assigned to the local and anonymous inner classes are also implementation dependent. Thus, we see that object serialization of inner classes may pose some unavoidable compatibility issues and hence the serialization of inner classes is strongly discouraged.
+
