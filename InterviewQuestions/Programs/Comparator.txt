@@ -1,0 +1,108 @@
+Student file
+==============
+package www.arraylist;
+
+class Student {
+
+	int age;
+	String name;
+	int rollno;
+
+	Student(int rollno, String name, int age) {
+		this.rollno = rollno;
+		this.name = name;
+		this.age = age;
+	}
+
+}
+
+
+AgeComparator file:
+=========================
+
+
+import java.util.Comparator;
+
+public class AgeComparator implements Comparator<Object> {
+	public int compare(Object o1, Object o2) {
+		Student s1 = (Student) o1;
+		Student s2 = (Student) o2;
+
+		if (s1.age == s2.age)
+			return 0;
+		else if (s1.age > s2.age)
+			return 1;
+		else
+			return -1;
+	}
+
+}
+
+NameComparator  File:
+==============================
+package www.arraylist;
+
+import java.util.Comparator;
+
+public class NameComparator implements Comparator<Object> {
+	public int compare(Object o1, Object o2) {
+		Student s1 = (Student) o1;
+		Student s2 = (Student) o2;
+
+		return s1.name.compareTo(s2.name);
+	}
+
+}
+
+Simple Test File:
+===================================
+
+package www.arraylist;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+
+public class Simple {
+
+	public static void main(String[] args) {
+		ArrayList<Student> al = new ArrayList<Student>();
+		al.add(new Student(101, "Vijay", 23));
+		al.add(new Student(106, "Ajay", 27));
+		al.add(new Student(105, "Jai", 21));
+
+		System.out.println("Sorting by NameComparator....");
+		Collections.sort(al, new NameComparator());
+
+		Iterator<Student> itr = al.iterator();
+		while (itr.hasNext()) {
+
+			Student st = itr.next();
+			System.out.println(st.rollno + " " + st.name + " " + st.age);
+		}
+
+		System.out.println("Sorting by AgeComparator.....");
+		Collections.sort(al, new AgeComparator());
+
+		Iterator<Student> itr2 = al.iterator();
+		while (itr2.hasNext()) {
+			Student st = itr2.next();
+			System.out.println(st.rollno + " " + st.name + " " + st.age);
+		}
+
+	}
+}
+
+Output:
+=============
+
+Sorting by NameComparator....
+106 Ajay 27
+105 Jai 21
+101 Vijay 23
+Sorting by AgeComparator.....
+105 Jai 21
+101 Vijay 23
+106 Ajay 27
+
+
