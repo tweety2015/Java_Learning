@@ -1,0 +1,74 @@
+package com.shona.thread;
+
+public class PrintOddEven {
+	Object obj = new Object();
+	public static void main(String [] args){
+		PrintOddEven nt = new PrintOddEven();
+		
+		Thread even = new Thread(new Even(nt.obj));
+		Thread odd = new Thread(new Odd(nt.obj));
+		
+		even.start();
+		odd.start();
+		
+	}
+
+}
+==============================================================
+package com.shona.thread;
+
+public class Odd implements Runnable {
+
+	Object lock;
+	int i = 1;
+
+	public Odd(Object obj) {
+		this.lock = obj;
+	}
+
+	public void run() {
+		while (i <= 19) {
+			synchronized (lock) {
+				System.out.println(i);
+				i += 2;
+				lock.notify();
+			}
+			try {
+				Thread.sleep(200);
+			} catch (InterruptedException e) {
+				System.out.println(e);
+			}
+
+		}
+	}
+
+}
+
+==========================================================================
+public class Even implements Runnable{
+
+	Object lock;
+	int i = 2;
+
+	public Even(Object obj) {
+		this.lock = obj;
+
+	}
+
+	public void run() {
+		while (i <= 20) {
+			synchronized (lock) {
+				try {
+					lock.wait();
+					System.out.println(i);
+					i += 2;
+				} catch (Exception e) {
+					System.out.println(e);
+				}
+			}
+		}
+
+		
+	}
+
+}
