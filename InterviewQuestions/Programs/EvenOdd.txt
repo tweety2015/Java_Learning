@@ -45,6 +45,8 @@ public class Odd implements Runnable {
 }
 
 ==========================================================================
+package com.shona.thread;
+
 public class Even implements Runnable{
 
 	Object lock;
